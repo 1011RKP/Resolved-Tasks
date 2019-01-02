@@ -1,0 +1,56 @@
+
+h4.reportsTitle {
+    color: white!important;
+    margin: 0!important;
+    text-align: center;
+}
+
+.col-form-label{
+    color: black!important;
+    font-size: 14px!important;
+    font-weight: 500!important;
+}
+.line{
+    border-bottom:1px solid #337ab7;    
+    margin-right: -15px;
+    padding-top: 15px;
+}
+
+#reportsBtn{
+    margin: auto;
+    text-align: center;
+    display: block;
+}
+.lodaingGIF{
+    margin: auto;
+    text-align: center;
+    display: block;
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td
+{
+    padding: 5px;
+}
+.table-bordered{
+    border-top: 0px!important;
+    border-left: 0px!important;
+    border-right: 0px!important;
+}
+.margin-bottom {
+    margin-bottom: 0px!important;
+}
+.tblHead{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #258ecd;
+    color: white;
+}
+#Reportstbl{
+    margin-left: 10px;
+}
+#Reportstbl tr:last-child {
+    border-bottom: 2px solid #0065a1;
+}
+bs-daterangepicker-container{
+    left: 120px!important;
+}

@@ -1,0 +1,153 @@
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" /> -->
+<link rel="stylesheet" href="https://unpkg.com/ngx-bootstrap/datepicker/bs-datepicker.css" />
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h4 class="reportsTitle"><i class="fa fa-bar-chart" aria-hidden="true"> </i> EHSMMS Active Reports</h4>
+  </div>
+  <div class="panel-body">
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Department</label>
+      <label class="col-sm-3 col-form-label">Person</label>
+      <label class="col-sm-3 col-form-label">Date Time Range</label>
+    </div>
+    <div class="form-group row">
+      <div class="col-sm-3">
+        <select class="form-control" name="Departments" [(ngModel)]='selectedDepartment' (change)="getPersons(selectedDepartment)"
+          [attr.disabled]="disableTopPanel">
+          <option [ngValue]="null">Select Department</option>
+          <option *ngFor="let Department of allDepartments" [ngValue]="Department">{{ Department.Department}}</option>
+        </select>
+      </div>
+      <div class="col-sm-3">
+        <select class="form-control" name="Person" [(ngModel)]='selectedPerson' (change)="getSlectedPerson(selectedPerson)"
+          [attr.disabled]="disableTopPanel">
+          <option [ngValue]="null">Select Person</option>
+          <option *ngFor="let Person of allPersons" [ngValue]="Person">{{ Person.Name }}</option>
+        </select>
+      </div>
+      <div class="col-sm-3 form-group">
+        <div class="input-group">
+          <input class="form-control" #drp="bsDaterangepicker" bsDaterangepicker [(ngModel)]="bsRangeValue" [bsConfig]="bsConfig">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar" style="cursor: pointer" (click)="drp.toggle()" [attr.aria-expanded]="drp.isOpen" value="Toggle"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row line"></div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Building</label>
+      <label class="col-sm-3 col-form-label">Floor</label>
+      <label class="col-sm-3 col-form-label">Location</label>
+    </div>
+    <div class="form-group row">
+      <div class="col-sm-3">
+        <select class="form-control" name="building" id="building" [(ngModel)]='selectedBuilding' (change)="getFloors(selectedBuilding)"
+          [attr.disabled]="disableTopPanel">
+          <option [ngValue]="null">Select Building</option>
+          <option *ngFor="let building of allBuilings" [ngValue]="building">{{ building.BuildingName }}</option>
+        </select>
+      </div>
+      <div class="col-sm-3">
+        <select class="form-control" name="Floor" id="floor" [(ngModel)]='selectedFloor' (change)="getLocations(selectedFloor)"
+          [attr.disabled]="disableTopPanel">
+          <option [ngValue]="null">Select Floor</option>
+          <option *ngFor="let floor of allFloors" [ngValue]="floor">{{ floor.FloorName }}</option>
+        </select>
+      </div>
+      <div class="col-sm-3">
+        <select class="form-control" name="Location" [(ngModel)]='selectedLocation' (change)="getSlectedLocation(selectedLocation)"
+          [attr.disabled]="disableTopPanel">
+          <option [ngValue]="null">Select Location</option>
+          <option *ngFor="let location of allLocations" [ngValue]="location"> {{location.LocationName}}</option>
+        </select>
+      </div>
+      <div class="col-sm-3">
+        <button type="button" class="btn btn-primary" id="reportsBtn" (click)="EHSMMSReports(bsRangeValue)">
+          <i class="fa fa-spinner" aria-hidden="true"> </i>
+          Generate Reports
+        </button>
+      </div>
+    </div>
+    <div class="form-group row line"></div>
+    <div class="form-group row">
+      <div class="row" *ngIf="showGIF == 'Show'">
+        <img class="lodaingGIF" src={{imagePath}} />
+      </div>
+    </div>
+    <div class="form-group row" *ngIf="shoewTable == 'Show'">
+      <div class="form-group row">
+        <div class="container">
+          <div class="col-sm-12"  *ngIf="excelBtn == 'Show'">
+            <button type="button" class="btn btn-primary" id="exporrtBtn" (click)="ExporttoExcel(excelObj)">
+              <i class="fa fa-file-excel-o" aria-hidden="true"> </i>
+              Export to Excel
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="noData == 'Data Existed'">
+        <div class="col-sm-12">
+          <table class="table table-bordered margin-bottom" id="Reportstbl">
+            <!--<colgroup>
+          <col class="col-md-1">
+          <col class="col-md-1">
+          <col class="col-md-1">
+          <col class="col-md-1">
+          <col class="col-md-1">
+          <col class="col-md-1">
+          <col class="col-md-1">
+          <col class="col-md-1">
+          <col class="col-md-1">
+          <col class="col-md-1">
+        </colgroup>-->
+            <thead class="tblHead">
+              <tr>
+                <!-- <th>Date From</th>
+                <th>Date To</th> -->
+                <th>Department</th>
+                <th>Person</th>
+                <th>Building</th>
+                <th>Floor</th>
+                <th>Location</th>
+                <th>Question</th>
+                <th>Answer</th>
+                <th>PossibleFineAmount</th>
+                <th>Regulation</th>
+                <th>Assigned To</th>
+                <th>InspectionType</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let Report of excelObj  | paginate: { itemsPerPage: 10, currentPage: p }">
+                <!-- <td>{{Report.DateFrom | date:'MMM d, y'}}</td>
+                <td>{{Report.DateTo | date:'MMM d, y'}}</td> -->
+                <td>{{Report.Department}}</td>
+                <td>{{Report.Person}}</td>
+                <td>{{Report.Building}}</td>
+                <td>{{Report.Floor}}</td>
+                <td>{{Report.Location}}</td>
+                <td>{{Report.Question}}</td>
+                <td>{{Report.Answer}}</td>
+                <td>{{Report.PossibleFineAmount}}</td>
+                <td>{{Report.Regulation}}</td>
+                <td>{{Report.Assigned}}</td>
+                <td>{{Report.InspectionType}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row">
+            <pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+          </div>
+      </div>     
+    </div>
+    <div class="form-group row" *ngIf="noData == 'Data Not Existed'">
+      <div class="container">
+          <div class="alert alert-danger">
+              <strong>Sorry!</strong> There is no data avilable with given Filters please try again
+            </div>
+      </div>
+    </div>
+  </div>
+</div>
